@@ -1,7 +1,10 @@
 const container = document.querySelector('#container')
 
-// store book objects
-let libraryArray = [{title: '1984', author: 'George Orwell', pages: 328, read: 'Read'}];
+// store book objects into array
+let library = [{title: '1984', 
+author: 'George Orwell', 
+pages: 328, 
+read: 'Read'}];
 
 // the constructor function
 function Book(title, author, pages, read) {
@@ -11,16 +14,26 @@ function Book(title, author, pages, read) {
     this.read = read
 }
 
-// store new book objects into libraryArray
+// append new book objects into library
 function addBookToLibrary(title, author, pages, read) {
-    libraryArray.push(new Book(title, author, pages, read))
+    library.push(new Book(title, author, pages, read))
 }
 
 // loops through the array and displays each book on the page
-function displayLibraryArray() {
-    libraryArray.forEach((obj) => {
+function displayLibrary(library) {
+    library.forEach((book) => {
         let div = document.createElement('div');
-        div.innerHTML = `<p>${obj.title}</p><p>${obj.author}</p><p>${obj.pages} pages</p><p>${obj.read}</p>`;
+        div.innerHTML = `<h3>${book.title}</h3><p>${book.author}</p><p>${book.pages}
+         pages</p><p>${book.read}</p>`; 
         container.appendChild(div);
     });
 };
+
+function openForm() {
+    document.getElementById("form-popup").style.display = "block";
+}
+
+// brings up a form allowing users to input the details for the new book
+document.getElementById('new-book-button').addEventListener('click', () => {
+    openForm()
+})
