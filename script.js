@@ -1,8 +1,5 @@
 // store book objects into array
-let library = [{title: '1984', 
-author: 'George Orwell', 
-pages: 328, 
-read: 'Read'}];
+let library = [];
 
 // the constructor function
 function Book(title, author, pages, read) {
@@ -31,9 +28,18 @@ function displayLibrary(arr) {
     container.innerHTML = '';
     arr.forEach((book) => {
         let div = document.createElement('div');
+        div.dataset.index = library.indexOf(book);
         div.innerHTML = `<h3>${book.title}</h3><p>${book.author}</p><p>${book.pages}
-         pages</p><p>${book.read}</p>`; 
+         pages</p><p>${book.read}</p>`;
+        // Add a button on each book’s display to remove the book from the library
+        let removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        div.appendChild(removeButton);
         container.appendChild(div);
+        removeButton.addEventListener('click', function() {
+            library.splice(div.index, 1);
+            removeButton.parentElement.remove();
+        })
     });
 };
 
@@ -45,3 +51,4 @@ function openForm() {
 document.getElementById('new-book-button').addEventListener('click', () => {
     openForm()
 })
+
