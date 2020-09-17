@@ -26,6 +26,7 @@ function addBookToLibrary() {
     library.push(new Book(newTitle, newAuthor, newPages, newRead));
     document.getElementById("form-popup").style.display = "none";
     displayLibrary(library);
+    localStorage.setItem('library', JSON.stringify(library))
 }
 
 const container = document.querySelector('#container');
@@ -37,7 +38,7 @@ function displayLibrary(arr) {
         div.dataset.index = library.indexOf(book);
         div.innerHTML = `<h3>${book.title}</h3>
         <p>${book.author}</p>
-        <p>${book.pages}pages</p>
+        <p>${book.pages} pages</p>
         <button onclick="toggleReadStatus(${div.dataset.index})">
         ${book.read}</button>`;
         addRemoveButton(div);
@@ -46,9 +47,10 @@ function displayLibrary(arr) {
 
 // Add a function on each book’s display to change its read status. 
 function toggleReadStatus(index) {
-    library[index].toggleReadValue()
-    let readButton = document.querySelector(`[data-index="${index}"] button`)
-    readButton.textContent = `${library[index].read}`
+    library[index].toggleReadValue();
+    let readButton = document.querySelector(`[data-index="${index}"] button`);
+    readButton.textContent = `${library[index].read}`;
+    localStorage.setItem('library', JSON.stringify(library));
 }
 
 // Add a button on each book’s display to remove the book from the library
@@ -58,8 +60,9 @@ function addRemoveButton(div) {
     div.appendChild(removeButton);
     container.appendChild(div);
     removeButton.addEventListener('click', function() {
-        library.splice(div.index, 1);
+        library.splice(div.dataset.index, 1);
         removeButton.parentElement.remove();
+        localStorage.setItem('library', JSON.stringify(library));
     })
 }
 
@@ -72,3 +75,11 @@ document.getElementById('new-book-button').addEventListener('click', () => {
     openForm()
 })
 
+
+// add some persistence to this library app using localStorage
+if (localStorage.library) {
+    let localStoredLibrary = localStorage.getItem('library');
+    localStoredLibrary = JSON.parse(localStoredLibrary);
+    library = localStoredLibrary;
+    displayLibrary(library);
+}
