@@ -47,6 +47,7 @@ function displayLibrary(arr) {
 
 // Add a function on each book’s display to change its read status. 
 function toggleReadStatus(index) {
+    console.log(library[index])
     library[index].toggleReadValue();
     let readButton = document.querySelector(`[data-index="${index}"] button`);
     readButton.textContent = `${library[index].read}`;
@@ -80,6 +81,8 @@ document.getElementById('new-book-button').addEventListener('click', () => {
 if (localStorage.library) {
     let localStoredLibrary = localStorage.getItem('library');
     localStoredLibrary = JSON.parse(localStoredLibrary);
-    library = localStoredLibrary;
+    localStoredLibrary.forEach((book) => {
+        library.push(new Book(book.title, book.author, book.pages, book.read));
+    })
     displayLibrary(library);
 }
